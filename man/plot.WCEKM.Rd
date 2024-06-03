@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.WCEKM.R
 \name{plot.WCEKM}
 \alias{plot.WCEKM}
-\title{Plot Weighted Composite Endpoint Kaplan-Meier Survival Curves}
+\title{plot.WCEKM}
 \usage{
 \method{plot}{WCEKM}(
   WCEKM_obj,
@@ -18,41 +18,52 @@
   legend_position = c(0.9, 0.8),
   legend_title = NULL,
   legend_labels = NULL,
-  theme = theme_WCESurvZ(base_size = base_size)
+  conf.int.alpha = 0.3,
+  theme = theme_WCESurvZ(base_size = base_size),
+  ...
 )
 }
 \arguments{
-\item{WCEKM_obj}{An object of class "WCEKM" containing Kaplan-Meier survival data.}
+\item{WCEKM_obj}{An object of class "WCEKM" containing the Kaplan-Meier survival data.}
 
-\item{x_limits}{A vector specifying the limits for the x-axis. Default is NULL.}
+\item{x_limits}{The limits for the x-axis. Default is NULL, which determines the range automatically.}
 
-\item{y_limits}{A vector specifying the limits for the y-axis. Default is c(0, 1).}
+\item{y_limits}{The limits for the y-axis. Default is c(0, 1).}
 
-\item{title}{The title of the plot. Default is "非加权Kaplan-Meier生存曲线".}
+\item{title}{The title of the plot. Default is NULL.}
+
+\item{base_size}{The base size for the theme. Default is 12.}
 
 \item{x_label}{The label for the x-axis. Default is NULL.}
 
 \item{y_label}{The label for the y-axis. Default is NULL.}
 
-\item{x_ticks}{A vector specifying the ticks for the x-axis. Default is NULL.}
+\item{x_ticks}{The major ticks for the x-axis. Default is NULL.}
 
-\item{y_ticks}{A vector specifying the ticks for the y-axis. Default is NULL.}
+\item{y_ticks}{The major ticks for the y-axis. Default is NULL.}
 
 \item{colors}{A vector of colors for the different groups. Default is NULL.}
 
-\item{legend_position}{A vector specifying the position of the legend. Default is c(0.9, 0.8).}
+\item{legend_position}{The position of the legend. Default is c(0.9, 0.8).}
 
-\item{legend_title}{The title for the legend. Default is NULL.}
+\item{legend_title}{The title of the legend. Default is NULL.}
 
-\item{legend_labels}{A vector of labels for the legend. Default is NULL.}
+\item{legend_labels}{The labels for the legend. Default is NULL.}
 
-\item{font_size}{The base font size for the plot. Default is 12.}
+\item{conf.int.alpha}{The alpha transparency for the confidence intervals. Default is 0.3.}
+
+\item{theme}{The ggplot2 theme to use. Default is theme_WCESurvZ(base_size = base_size).}
+
+\item{...}{Additional arguments passed to methods.}
 }
 \value{
-A ggplot2 object showing the Kaplan-Meier survival curves.
+This function does not return a value. It generates a plot.
 }
 \description{
-This function plots Kaplan-Meier survival curves for weighted composite endpoints.
+Plot Weighted Composite Endpoint Kaplan-Meier Survival Curves
+}
+\details{
+This function generates a Kaplan-Meier survival plot with weighted composite endpoints from a WCEKM object.
 }
 \examples{
 # Example usage:

@@ -8,6 +8,7 @@
 #' @param weights A named vector of weights corresponding to the events.
 #' @param conf.int Significance level for calculating confidence intervals. Default is 0.95.
 #' @param conf.type Type of confidence interval to calculate. Default is "log".
+#' @param testmethod Method to use for the log-rank test. Options are "logrank" or "none". Default is "logrank".
 #'
 #' @return An object of class "WCEKM" containing the following elements:
 #' \describe{
@@ -16,12 +17,8 @@
 #'   \item{groups}{A sorted vector of group names.}
 #'   \item{sample_size}{A named vector of the sample sizes for each group.}
 #'   \item{followup}{The maximum follow-up time across all groups.}
-#'   \item{expected}{A vector of expected events for each group.}
-#'   \item{observed}{A vector of observed events for each group.}
-#'   \item{var}{The variance-covariance matrix for the log-rank test.}
-#'   \item{chi}{The chi-square statistic for the log-rank test.}
 #'   \item{pvalue}{The p-value for the log-rank test.}
-#'   \item{method}{The method used for the log-rank test.}
+#'   \item{testmethod}{The method used for the log-rank test.}
 #' }
 #' @export
 #'

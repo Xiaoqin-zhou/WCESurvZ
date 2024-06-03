@@ -1,22 +1,27 @@
+#' plot.WCEKM
+#'
 #' Plot Weighted Composite Endpoint Kaplan-Meier Survival Curves
 #'
-#' This function plots Kaplan-Meier survival curves for weighted composite endpoints.
+#' This function generates a Kaplan-Meier survival plot with weighted composite endpoints from a WCEKM object.
 #'
-#' @param WCEKM_obj An object of class "WCEKM" containing Kaplan-Meier survival data.
-#' @param x_limits A vector specifying the limits for the x-axis. Default is NULL.
-#' @param y_limits A vector specifying the limits for the y-axis. Default is c(0, 1).
-#' @param font_size The base font size for the plot. Default is 12.
-#' @param title The title of the plot. Default is "非加权Kaplan-Meier生存曲线".
+#' @param WCEKM_obj An object of class "WCEKM" containing the Kaplan-Meier survival data.
+#' @param x_limits The limits for the x-axis. Default is NULL, which determines the range automatically.
+#' @param y_limits The limits for the y-axis. Default is c(0, 1).
+#' @param title The title of the plot. Default is NULL.
+#' @param base_size The base size for the theme. Default is 12.
 #' @param x_label The label for the x-axis. Default is NULL.
 #' @param y_label The label for the y-axis. Default is NULL.
-#' @param legend_position A vector specifying the position of the legend. Default is c(0.9, 0.8).
+#' @param x_ticks The major ticks for the x-axis. Default is NULL.
+#' @param y_ticks The major ticks for the y-axis. Default is NULL.
 #' @param colors A vector of colors for the different groups. Default is NULL.
-#' @param x_ticks A vector specifying the ticks for the x-axis. Default is NULL.
-#' @param y_ticks A vector specifying the ticks for the y-axis. Default is NULL.
-#' @param legend_title The title for the legend. Default is NULL.
-#' @param legend_labels A vector of labels for the legend. Default is NULL.
+#' @param legend_position The position of the legend. Default is c(0.9, 0.8).
+#' @param legend_title The title of the legend. Default is NULL.
+#' @param legend_labels The labels for the legend. Default is NULL.
+#' @param conf.int.alpha The alpha transparency for the confidence intervals. Default is 0.3.
+#' @param theme The ggplot2 theme to use. Default is theme_WCESurvZ(base_size = base_size).
+#' @param ... Additional arguments passed to methods.
 #'
-#' @return A ggplot2 object showing the Kaplan-Meier survival curves.
+#' @return This function does not return a value. It generates a plot.
 #' @export
 #'
 #' @examples
@@ -29,7 +34,7 @@ plot.WCEKM <- function(WCEKM_obj, x_limits = NULL, y_limits = c(0, 1),
                        title = NULL,base_size = 12,
                        x_label = NULL, y_label = NULL,  x_ticks = NULL, y_ticks = NULL,
                        colors = NULL, legend_position = c(0.9, 0.8),
-                       legend_title = NULL, legend_labels = NULL,theme = theme_WCESurvZ(base_size = base_size)) {
+                       legend_title = NULL, legend_labels = NULL,conf.int.alpha = 0.3,theme = theme_WCESurvZ(base_size = base_size), ...) {
 
   # Extract km_data from the WCEKM object
   km_data <- WCEKM_obj$km_data
@@ -87,11 +92,12 @@ plot.WCEKM <- function(WCEKM_obj, x_limits = NULL, y_limits = c(0, 1),
 
   # Create the Kaplan-Meier plot
   p <- ggplot(km_data, aes(x = time, y = survival,color = group, group = group)) +
-    geom_step() +
-    geom_ribbon(aes(ymin = lower, ymax = upper, fill = group), alpha = 0.2, color = NA) +
+    geom_step(size = 1.02) +
     labs(title = title, x = x_label, y = y_label) +
-    geom_point(data = subset(km_data, n.censor > 0), aes(x = time, y = survival), shape = 3, size = 2) +
+    geom_point(data = subset(km_data, n.censor > 0), aes(x = time, y = survival), shape = 3, size = 3) +
     theme +
+    geom_confint(mapping = aes(ymin = lower, ymax = upper, fill = group), data = km_data, stat = "identity",
+        position = "identity", na.rm = TRUE,alpha = conf.int.alpha, color = NA)+
     theme(legend.position = legend_position) +
     annotate("text", x = Inf, y = Inf, label = paste("P-value:", p_value_formatted), hjust = 1.5, vjust = 2, size = base_size/3) +
     scale_color_manual(values = colors, labels = legend_labels) +
@@ -109,6 +115,5 @@ plot.WCEKM <- function(WCEKM_obj, x_limits = NULL, y_limits = c(0, 1),
     )
 
 
-  # Print the plot
   print(p)
 }

@@ -18,31 +18,37 @@ theme_WCESurvZ(
 )
 }
 \arguments{
-\item{base_size}{NA}
+\item{base_size}{Base font size for the theme. Default is 12.}
 
-\item{base_family}{NA}
+\item{base_family}{Base font family for the theme. Default is "".}
 
-\item{font.main}{NA}
+\item{font.main}{Font settings for the main title. Default is c(16, "plain", "black").}
 
-\item{font.submain}{NA}
+\item{font.submain}{Font settings for the subtitle. Default is c(15, "plain", "black").}
 
-\item{font.x}{NA}
+\item{font.x}{Font settings for the x-axis title. Default is c(14, "plain", "black").}
 
-\item{font.y}{NA}
+\item{font.y}{Font settings for the y-axis title. Default is c(14, "plain", "black").}
 
-\item{font.caption}{NA}
+\item{font.caption}{Font settings for the plot caption. Default is c(15, "plain", "black").}
 
-\item{font.tickslab}{NA}
+\item{font.tickslab}{Font settings for the axis tick labels. Default is c(12, "plain", "black").}
 
-\item{font.legend}{NA}
+\item{font.legend}{Font settings for the legend text. Default is c(10, "plain", "black").}
 
-\item{...}{NA}
-
-\item{legend}{NA}
+\item{...}{Additional arguments passed to methods.}
 }
 \value{
-NA
+A ggplot2 theme object customized for weighted composite endpoint survival plots.
 }
 \description{
-theme_WCESurvZ
+Custom Theme for Weighted Composite Endpoint Survival Plots
+}
+\details{
+This function generates a custom ggplot2 theme tailored for weighted composite endpoint survival plots, with specific font settings for various plot elements.
+}
+\examples{
+# Example usage:
+p <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + theme_WCESurvZ()
+print(p)
 }

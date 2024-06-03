@@ -7,17 +7,25 @@
 logrankTest(data)
 }
 \arguments{
-\item{data}{}
+\item{data}{A data frame containing the input data. The data frame must include the following columns: id, event, time, group, status, weight, n.risk_1, n.risk_2.}
 }
 \value{
-NA
+A list containing the following elements:
+\describe{
+  \item{expected}{A vector of expected events for each group.}
+  \item{observed}{A vector of observed events for each group.}
+  \item{chi}{The chi-square statistic for the log-rank test.}
+  \item{pvalue}{The p-value for the log-rank test.}
+}
 }
 \description{
-Perform Log-Rank Test for Survival Data
+Perform a log-rank test for weighted composite endpoint survival analysis
 }
 \details{
-This function performs a log-rank test to compare survival curves between different groups.
+This function performs a log-rank test on weighted composite endpoint survival data, calculating the observed and expected events, the chi-square statistic, and the p-value.
 }
 \examples{
-NA
+# Example usage:
+result <- logrankTest(surv_exdata)
+
 }
