@@ -1,0 +1,7 @@
+install.packages("U:/小芹复合结局课题代码/WCESurvZ_1.1.0.zip", repos = NULL, type = "win.binary")
+
+
+
+git add .
+
+git commit -m "a new complete version backup"
