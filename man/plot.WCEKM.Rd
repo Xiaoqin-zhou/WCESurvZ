@@ -10,6 +10,8 @@
   y_limits = c(0, 1),
   title = NULL,
   base_size = 12,
+  pval.coord = c(Inf, Inf),
+  pval.size = 6,
   x_label = NULL,
   y_label = NULL,
   x_ticks = NULL,

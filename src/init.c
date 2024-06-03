@@ -1,14 +1,13 @@
 /*
-** 这个文件会预加载 .C 例程的入口点
-** 根据 R-core 的要求添加
-** 它通过声明参数数量增加了一层保护，
-** 并且可能带来一点点速度上的提升
+** This file preloads the entry points of .C routines
+** Added as per the request of R-core
+** It adds an extra layer of protection by declaring the number of parameters,
+** and may bring a slight speed improvement
 */
-#include "survS.h" //包含自定义的头文件
-#include "survproto.h" //包含自定义的头文件
-#include "R_ext/Rdynload.h" //包含 R 动态加载的头文件
-#include "Rversion.h" //包含 R 版本信息的头文件
-
+#include "survS.h" // Include custom header file
+#include "survproto.h" // Include custom header file
+#include "R_ext/Rdynload.h" // Include R dynamic loading header file
+#include "Rversion.h" // Include R version information header file
 
 static const R_CMethodDef Centries[] = {
     {"Csurvdiff2",  (DL_FUNC) &survdiff2, 14},
@@ -16,28 +15,28 @@ static const R_CMethodDef Centries[] = {
     {NULL, NULL, 0}
 };
 
-// 静态常量 R_CallMethodDef 数组，定义了要注册的 .C 例程
-//这是一个静态常量数组，类型为 R_CallMethodDef，用于定义要注册的.Call 例程
+// Static constant array of R_CallMethodDef, defining the .C routines to register
+// This is a static constant array of type R_CallMethodDef, used to define the .Call routines to register
 static const R_CallMethodDef Callentries[] = {
-    {"Csurvfitkm",    (DL_FUNC) &survfitkm,   11},  // 定义 "Csurvfitkm" 函数，指向 survfitkm，接受 11 个参数
-    {NULL, NULL, 0}  // 数组的终止标记
+    {"Csurvfitkm",    (DL_FUNC) &survfitkm,   11},  // Define the "Csurvfitkm" function, pointing to survfitkm, accepting 11 parameters
+    {NULL, NULL, 0}  // End marker for the array
 };
 
-// 初始化 WCESurvZ 包时调用的函数
+// Function called when initializing the WCESurvZ package
 void R_init_WCESurvZ(DllInfo *dll){
-    // 注册 R 例程，第二个参数为 NULL，表示没有 .C 例程，第三个参数为 Callentries，表示要注册的 .Call 例程
+    // Register R routines, the second parameter being NULL indicates no .C routines, the third parameter indicates the .Call routines to register
     R_registerRoutines(dll, Centries,  Callentries, NULL, NULL);
 
     /* 
-    ** 以下代码行使得只有上面定义的例程可以被外部包使用，
-    ** 即像 dmatrix() 这样的内部函数现在是不可见的。
+    ** The following line makes it so that only the routines defined above can be used by external packages,
+    ** meaning internal functions like dmatrix() are now invisible.
     */
     R_useDynamicSymbols(dll, FALSE); 
 
     /*
-    ** 这一行使得它们只能通过上面定义的符号访问，
-    ** 即 .Call("tmerge", ) 不会工作，但 .Call(Ctmerge, ) 可以。
-    ** 这个特性在版本 2.16 中添加
+    ** This line makes them accessible only through the symbols defined above,
+    ** meaning .Call("tmerge", ) will not work, but .Call(Ctmerge, ) will.
+    ** This feature was added in version 2.16
     */
 #if defined(R_VERSION) && R_VERSION >= R_Version(2, 16, 0)
     R_forceSymbols(dll, TRUE);

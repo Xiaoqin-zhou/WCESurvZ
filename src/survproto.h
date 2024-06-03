@@ -1,43 +1,43 @@
 /*
-** 所有生存函数的原型
-** 将其包含在每个例程中有助于防止参数错误
-* 这些函数声明帮助防止函数定义与调用时参数不匹配的错误
+** Prototypes for all survival functions
+** Including them in each routine helps prevent parameter errors
+* These function declarations help prevent errors caused by parameter mismatches between function definitions and calls
 */
 
-// 定义一个函数，用于将一维 double 数组转换为二维数组
+// Define a function to convert a one-dimensional double array to a two-dimensional array
 double **dmatrix(double *array, int nrow, int ncol);
 
-// 定义一个函数，用于将一维 int 数组转换为二维数组
+// Define a function to convert a one-dimensional int array to a two-dimensional array
 int    **imatrix(int *array, int nrow, int ncol);
 
-// 初始化循环的函数，接收最小值和最大值作为参数
+// Function to initialize a loop, receiving min and max values as parameters
 void init_doloop(int min, int max);
 
-// 执行循环的函数，接收循环次数和索引数组作为参数
+// Function to execute a loop, receiving the number of loops and an index array as parameters
 int doloop(int nloops, int *index);
 
-// 计算没有风险的个体数量的函数
-// 接收参数：个体数、开始时间、结束时间、状态、排序索引1、排序索引2、分层信息
+// Function to calculate the number of individuals at risk
+// Receives parameters: number of individuals, start time, end time, status, sort index 1, sort index 2, stratification information
 int *norisk(int n, double *time1, double *time2, double *status, 
             int *sort1, int *sort2, int *strata);
 
-// 计算 P 值步长的函数
-// 接收参数：列数、索引数组、索引数组2、权重数组、数据数组、因子数组、维度数组、切割数组、步长、边缘
+// Function to calculate the P value step
+// Receives parameters: number of columns, index array, index array 2, weight array, data array, factor array, dimension array, cut array, step size, edge
 double pystep(int nc, int *index, int *index2, double *wt, 
               double *data, int *fac, int *dims, double **cuts, 
               double step, int edge);
 
-// 定义一个结构体 snode
+// Define a structure snode
 typedef struct snode {
-    int value;              // 节点的值
-    int depth;              // 向前链接的数量
-    struct snode *forward[1];  // 向前链接的集合
+    int value;              // Node value
+    int depth;              // Number of forward links
+    struct snode *forward[1];  // Set of forward links
 } snode;
 
-// 定义 survfitkm 函数，用于计算生存曲线
-// 这是一个计算生存曲线的函数，使用了 R 的 SEXP 类型作为参数，用于与 R 交互
-// 接收多个 SEXP 类型的参数，表示 R 传递的数据
-//这个函数接收多个参数，表示生存时间、权重、排序索引、类型、ID、组数、位置、影响、反向标记和入口标记等数据
+// Define the survfitkm function for calculating survival curves
+// This function calculates survival curves and uses R's SEXP type for parameters to interact with R
+// Receives multiple SEXP type parameters representing data passed from R
+// This function receives multiple parameters representing survival time, weight, sort index, type, ID, number of groups, position, influence, reverse flag, and entry flag
 SEXP survfitkm(SEXP y2, SEXP weight2, SEXP sort12, SEXP sort22, 
                SEXP type2, SEXP id2, SEXP nid2, SEXP position2, 
                SEXP influence2, SEXP reverse2, SEXP entry2);

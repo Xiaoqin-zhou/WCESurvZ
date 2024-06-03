@@ -31,7 +31,7 @@
 #' plot(WCE_obj)
 #'
 plot.WCEKM <- function(WCEKM_obj, x_limits = NULL, y_limits = c(0, 1),
-                       title = NULL,base_size = 12,
+                       title = NULL,base_size = 12, pval.coord = c(Inf,Inf), pval.size = 6,
                        x_label = NULL, y_label = NULL,  x_ticks = NULL, y_ticks = NULL,
                        colors = NULL, legend_position = c(0.9, 0.8),
                        legend_title = NULL, legend_labels = NULL,conf.int.alpha = 0.3,theme = theme_WCESurvZ(base_size = base_size), ...) {
@@ -99,7 +99,7 @@ plot.WCEKM <- function(WCEKM_obj, x_limits = NULL, y_limits = c(0, 1),
     geom_confint(mapping = aes(ymin = lower, ymax = upper, fill = group), data = km_data, stat = "identity",
         position = "identity", na.rm = TRUE,alpha = conf.int.alpha, color = NA)+
     theme(legend.position = legend_position) +
-    annotate("text", x = Inf, y = Inf, label = paste("P-value:", p_value_formatted), hjust = 1.5, vjust = 2, size = base_size/3) +
+    annotate("text", x = pval.coord[1], y = pval.coord[2], label = paste("p=", p_value_formatted), hjust = 1.5, vjust = 2, size = pval.size) +
     scale_color_manual(values = colors, labels = legend_labels) +
     scale_fill_manual(values = colors, labels = legend_labels) +
     scale_x_continuous(

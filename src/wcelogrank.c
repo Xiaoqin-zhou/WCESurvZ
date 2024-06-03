@@ -1,56 +1,48 @@
-#include <math.h>     // 导入数学库
-#include "survS.h"    // 导入survS头文件
-#include "survproto.h"// 导入survproto头文件
+#include <math.h>     // Import the math library
+#include "survS.h"    // Import the survS header file
+#include "survproto.h"// Import the survproto header file
 
-// 定义函数wcelogrank
-void wcelogrank(int *nn, int *nngroup,    //总样本量和总分组数，因为R语言数据结构和C语言不同，所以需要使用指针，将数据导入C语言
-               double *time, int *status, int *group, double *weight,    //time，status，weight都是长度为*nn的数组，*group相当于分组标签，也是数组
-               double *nrisk1, double *nrisk2,double *nriskall,
-               double *obs, double *exp, double *tempt, double *var, double *risk   //观测值，方差，risk都是长度为ngroup的数组
+// Define the function wcelogrank
+void wcelogrank(int *nn, int *nngroup,    // Total sample size and total number of groups. Pointers are used to import data from R to C due to different data structures.
+               double *time, int *status, int *group, double *weight,    // Arrays of length *nn for time, status, and weight. *group is an array representing group labels.
+               double *nrisk1, double *nrisk2, double *nriskall,    // Arrays for number at risk in each group and overall.
+               double *obs, double *exp, double *tempt, double *var, double *risk   // Arrays of length nngroup for observed values, expected values, variance, and risk.
                )
 {
-    // 注册变量，快速访问
-    register int i, j, k; // 用于循环迭代的变量，register关键字表示将它们存储在CPU寄存器中以提高访问速度
-    int kk;               // 索引变量，用于二维数组var的访问
-    int n;                // 当前分层中的观测数
-    int ngroup;           // 组的数量
-    int ntot;             // 总观测数
-    // int istart;           // 当前分层的起始索引
-    // int koff;             // 当前分层组的偏移量，用于obs和exp数组的访问
-    double km;            // Kaplan-Meier估计值
-    double nrisk;         // 当前风险集中的样本数
-    double wt;            // 权重值，根据Kaplan-Meier估计和rho计算得出
-    double tmp;           // 临时变量，用于方差计算
-    double deaths;        // 当前时间点的死亡数
-    // double temp_i;          // 观测值-期望值
+    // Register variables for fast access
+    register int i, j, k; // Loop iterator variables. The register keyword suggests storing them in CPU registers for faster access.
+    int kk;               // Index variable for accessing the 2D array var
+    int n;                // Number of observations in the current stratum
+    int ngroup;           // Number of groups
+    int ntot;             // Total number of observations
+    double km;            // Kaplan-Meier estimate
+    double nrisk;         // Number of samples in the current risk set
+    double wt;            // Weight value calculated based on the Kaplan-Meier estimate and rho
+    double tmp;           // Temporary variable for variance calculation
+    double deaths;        // Number of deaths at the current time point
 
+    // Assign variables using pointers to convert R data format to C data format. For array pointers, assignment is not needed.
+    n = *nn;  // n = total sample size
+    ngroup = *nngroup;  // Number of groups
+    var[0] = 0;  // Initialize the variance array
 
-    // 赋值变量，使用指针，将R语言的数据格式转换成C语言的数据格式，对于数组指针，不需要赋值
-    n = *nn;  //n = 总样本数
-    ngroup = *nngroup;      // 组数
-    var[0] = 0;   //初始化
-
+    // Initialize observed values, expected values, and risk arrays to 0
     for (i = 0; i < ngroup; i++) {
-
-        obs[i] = 0;    //初始化观测值为0
-        exp[i] = 0;   //初始化期望值为0
-        // tempt[i] = 0;
-        risk[i] = 0;   //初始化风险数组为0
+        obs[i] = 0;  // Initialize observed values to 0
+        exp[i] = 0;  // Initialize expected values to 0
+        risk[i] = 0;  // Initialize risk array to 0
     }
 
-    // 进行实际检验
+    // Perform the actual test
     for (i = n - 1; i >= 0; i--) {  
-        // 计算权重
-        // wt = 1;
-        k = group[i] - 1;
-        obs[k] += status[i] * weight[i];
+        
+        k = group[i] - 1;  // Group index
+        obs[k] += status[i] * weight[i];  // Update observed values
 
-        exp[0] +=  (weight[i]* nrisk1[i])/(nriskall[i]);
-        exp[1] +=  (weight[i]* nrisk2[i])/(nriskall[i]);
+        exp[0] +=  (weight[i] * nrisk1[i]) / (nriskall[i]);  // Update expected values for group 1
+        exp[1] +=  (weight[i] * nrisk2[i]) / (nriskall[i]);  // Update expected values for group 2
 
-        tmp =  (weight[i]* nrisk1[i]*nrisk2[i]*(nriskall[i]-1))/ ((nriskall[i]*nriskall[i]) * (nriskall[i]-weight[i]));
-        var[0] += tmp;
+        tmp =  (weight[i] * nrisk1[i] * nrisk2[i] * (nriskall[i] - 1)) / ((nriskall[i] * nriskall[i]) * (nriskall[i] - weight[i]));
+        var[0] += tmp;  // Update variance
     }
 }
-
-
