@@ -103,48 +103,53 @@ WCE_KMSurv <- function(data, weights = NULL,
   }
 
   # Generate Kaplan-Meier data
+  # Group the data by 'group' and keep distinct time points, retaining all columns
   km_data <- data %>%
-    group_by(group) %>%
-    distinct(time, .keep_all = TRUE) %>%
-    arrange(group,time) %>%
-    mutate(
-      survival = {
-        km <- 1.0
-        sapply(1:n(), function(i) {
-          km <<- km * (n.risk[i] - n.event[i]) / n.risk[i]
-          km
-        })
-      },
-      std = {
-        v1 <- 0.0
-        sapply(1:n(), function(i) {
-          v1 <<- v1 + n.event[i] / (n.risk[i] * (n.risk[i] - n.event[i]))
-          sqrt(v1)
-        })
-      },
-      cumhaz = {
-        nelson <- 0.0
-        sapply(1:n(), function(i) {
-          nelson <<- nelson + n.event[i] / n.risk[i]
-          nelson
-        })
-      },
-      std.chaz = {
-        v2 <- 0.0
-        sapply(1:n(), function(i) {
-          v2 <<- v2 + n.event[i] / (n.risk[i] * n.risk[i])
-          sqrt(v2)
-        })
-      }
-    )
-
-  # Calculate confidence intervals
-  if (conf.type == "log") {
-    km_data <- km_data %>%
+      group_by(group) %>%
+      distinct(time, .keep_all = TRUE) %>%
+      arrange(group, time) %>% # Arrange the data by group and time
       mutate(
-        lower = exp(log(survival) - zval * std),
-        upper = pmin(exp(log(survival) + zval * std), 1)
+        # Calculate survival probability
+        survival = {
+          km <- 1.0 # Initialize survival probability to 1
+          sapply(1:n(), function(i) { # Loop through each time point
+            km <<- km * (n.risk[i] - n.event[i]) / n.risk[i] # Update survival probability
+            km # Return the current survival probability
+          })
+        },
+        # Calculate the standard error of the survival probability
+        std.err = {
+          v1 <- 0.0 # Initialize variance sum to 0
+          sapply(1:n(), function(i) { # Loop through each time point
+            v1 <<- v1 + n.event[i] / (n.risk[i] * (n.risk[i] - n.event[i])) # Update variance sum
+            sqrt(v1) # Return the current standard error (square root of variance sum)
+          })
+        },
+        # Calculate cumulative hazard
+        cumhaz = {
+          nelson <- 0.0 # Initialize cumulative hazard to 0
+          sapply(1:n(), function(i) { # Loop through each time point
+            nelson <<- nelson + n.event[i] / n.risk[i] # Update cumulative hazard
+            nelson # Return the current cumulative hazard
+          })
+        },
+        # Calculate the standard error of the cumulative hazard
+        std.chaz = {
+          v2 <- 0.0 # Initialize variance sum to 0
+          sapply(1:n(), function(i) { # Loop through each time point
+            v2 <<- v2 + n.event[i] / (n.risk[i] * n.risk[i]) # Update variance sum
+            sqrt(v2) # Return the current standard error (square root of variance sum)
+          })
+        }
       )
+
+  # If confidence interval type is "log", calculate the confidence intervals for survival probability
+  if (conf.type == "log") {
+      km_data <- km_data %>%
+        mutate(
+          lower = exp(log(survival) - zval * std.err), # Calculate lower confidence limit
+          upper = pmin(exp(log(survival) + zval * std.err), 1) # Calculate upper confidence limit, limiting to a maximum of 1
+        )
   }
 
   # Convert group column to factor

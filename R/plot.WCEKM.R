@@ -5,14 +5,14 @@
 #' This function generates a Kaplan-Meier survival plot with weighted composite endpoints from a WCEKM object.
 #'
 #' @param WCEKM_obj An object of class "WCEKM" containing the Kaplan-Meier survival data.
-#' @param x_limits The limits for the x-axis. Default is NULL, which determines the range automatically.
-#' @param y_limits The limits for the y-axis. Default is c(0, 1).
-#' @param title The title of the plot. Default is NULL.
-#' @param base_size The base size for the theme. Default is 12.
-#' @param x_label The label for the x-axis. Default is NULL.
-#' @param y_label The label for the y-axis. Default is NULL.
+#' @param xlim The limits for the x-axis. Default is NULL, which determines the range automatically.
+#' @param ylim The limits for the y-axis. Default is c(0, 1).
+#' @param xlab The label for the x-axis. Default is NULL.
+#' @param ylab The label for the y-axis. Default is NULL.
 #' @param x_ticks The major ticks for the x-axis. Default is NULL.
 #' @param y_ticks The major ticks for the y-axis. Default is NULL.
+#' @param base_size The base size for the theme. Default is 12.
+#' @param title The title of the plot. Default is NULL.
 #' @param colors A vector of colors for the different groups. Default is NULL.
 #' @param legend_position The position of the legend. Default is c(0.9, 0.8).
 #' @param legend_title The title of the legend. Default is NULL.
@@ -30,9 +30,9 @@
 #' WCE_obj <- WCE_KMSurv(surv_exdata, weights)
 #' plot(WCE_obj)
 #'
-plot.WCEKM <- function(WCEKM_obj, x_limits = NULL, y_limits = c(0, 1),
-                       title = NULL,base_size = 12, pval.coord = c(Inf,Inf), pval.size = 6,
-                       x_label = NULL, y_label = NULL,  x_ticks = NULL, y_ticks = NULL,
+plot.WCEKM <- function(WCEKM_obj, xlim = NULL, ylim = c(0, 1),
+                       xlab = NULL, ylab = NULL,  x_ticks = NULL, y_ticks = NULL,
+                       base_size = 12,title = NULL, pval.coord = c(Inf,Inf), pval.size = 6,
                        colors = NULL, legend_position = c(0.9, 0.8),
                        legend_title = NULL, legend_labels = NULL,conf.int.alpha = 0.3,theme = theme_WCESurvZ(base_size = base_size), ...) {
 
@@ -40,29 +40,29 @@ plot.WCEKM <- function(WCEKM_obj, x_limits = NULL, y_limits = c(0, 1),
   km_data <- WCEKM_obj$km_data
 
   # If x_limits is NULL, determine the x-axis range automatically
-  if (is.null(x_limits)) {
-    x_limits <- c(0, max(km_data$time, na.rm = TRUE))
+  if (is.null(xlim)) {
+    xlim <- c(0, max(km_data$time, na.rm = TRUE))
   }
 
   # If y_ticks is NULL, set the y-axis ticks to 0.1 increments
   if (is.null(y_ticks)) {
-    y_ticks <- seq(y_limits[1], y_limits[2], by = 0.1)
+    y_ticks <- seq(ylim[1], ylim[2], by = 0.1)
   }
 
   # If x_ticks is NULL, determine the x-axis ticks automatically
   if (is.null(x_ticks)) {
-    max_time <- x_limits[2]
+    max_time <- xlim[2]
     digit_count <- 10^(floor(log10(max_time)))
     rounded_tick <- ceiling(max_time / digit_count)
-    x_ticks <- seq(x_limits[1], x_limits[2], by = rounded_tick * digit_count / 10)
+    x_ticks <- seq(xlim[1], xlim[2], by = rounded_tick * digit_count / 10)
   }
 
   # Set default x-axis and y-axis labels
-  if (is.null(x_label)) {
-    x_label <- "time"
+  if (is.null(xlab)) {
+    xlab <- "time"
   }
-  if (is.null(y_label)) {
-    y_label <- "Survival probability"
+  if (is.null(ylab)) {
+    ylab <- "Survival probability"
   }
 
   # Set default legend title
@@ -93,25 +93,25 @@ plot.WCEKM <- function(WCEKM_obj, x_limits = NULL, y_limits = c(0, 1),
   # Create the Kaplan-Meier plot
   p <- ggplot(km_data, aes(x = time, y = survival,color = group, group = group)) +
     geom_step(size = 1.02) +
-    labs(title = title, x = x_label, y = y_label) +
+    labs(title = title, x = xlab, y = ylab) +
     geom_point(data = subset(km_data, n.censor > 0), aes(x = time, y = survival), shape = 3, size = 3) +
     theme +
     geom_confint(mapping = aes(ymin = lower, ymax = upper, fill = group), data = km_data, stat = "identity",
         position = "identity", na.rm = TRUE,alpha = conf.int.alpha, color = NA)+
     theme(legend.position = legend_position) +
-    annotate("text", x = pval.coord[1], y = pval.coord[2], label = paste("p=", p_value_formatted), hjust = 1.5, vjust = 2, size = pval.size) +
+    annotate("text", x = pval.coord[1], y = pval.coord[2], label = paste("p =", p_value_formatted), hjust = 1.5, vjust = 2, size = pval.size) +
     scale_color_manual(values = colors, labels = legend_labels) +
     scale_fill_manual(values = colors, labels = legend_labels) +
     scale_x_continuous(
       breaks = x_ticks,  # Set major ticks
       labels = as.character(x_ticks),  # Custom tick labels
-      limits = x_limits,  # Set x-axis limits
+      limits = xlim,  # Set x-axis limits
       expand = c(0.01, 0),  # No extra space
       position = "bottom"  # Place x-axis at the bottom
     ) +
     scale_y_continuous(
       breaks = y_ticks,  # Set major ticks
-      limits = y_limits  # Set y-axis limits
+      limits = ylim  # Set y-axis limits
     )
 
 

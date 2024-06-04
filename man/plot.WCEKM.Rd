@@ -6,16 +6,16 @@
 \usage{
 \method{plot}{WCEKM}(
   WCEKM_obj,
-  x_limits = NULL,
-  y_limits = c(0, 1),
-  title = NULL,
-  base_size = 12,
-  pval.coord = c(Inf, Inf),
-  pval.size = 6,
-  x_label = NULL,
-  y_label = NULL,
+  xlim = NULL,
+  ylim = c(0, 1),
+  xlab = NULL,
+  ylab = NULL,
   x_ticks = NULL,
   y_ticks = NULL,
+  base_size = 12,
+  title = NULL,
+  pval.coord = c(Inf, Inf),
+  pval.size = 6,
   colors = NULL,
   legend_position = c(0.9, 0.8),
   legend_title = NULL,
@@ -28,21 +28,21 @@
 \arguments{
 \item{WCEKM_obj}{An object of class "WCEKM" containing the Kaplan-Meier survival data.}
 
-\item{x_limits}{The limits for the x-axis. Default is NULL, which determines the range automatically.}
+\item{xlim}{The limits for the x-axis. Default is NULL, which determines the range automatically.}
 
-\item{y_limits}{The limits for the y-axis. Default is c(0, 1).}
+\item{ylim}{The limits for the y-axis. Default is c(0, 1).}
 
-\item{title}{The title of the plot. Default is NULL.}
+\item{xlab}{The label for the x-axis. Default is NULL.}
 
-\item{base_size}{The base size for the theme. Default is 12.}
-
-\item{x_label}{The label for the x-axis. Default is NULL.}
-
-\item{y_label}{The label for the y-axis. Default is NULL.}
+\item{ylab}{The label for the y-axis. Default is NULL.}
 
 \item{x_ticks}{The major ticks for the x-axis. Default is NULL.}
 
 \item{y_ticks}{The major ticks for the y-axis. Default is NULL.}
+
+\item{base_size}{The base size for the theme. Default is 12.}
+
+\item{title}{The title of the plot. Default is NULL.}
 
 \item{colors}{A vector of colors for the different groups. Default is NULL.}
 
