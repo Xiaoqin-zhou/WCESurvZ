@@ -1,3 +1,0 @@
-git add .
-git commit -m "a small change"
-git push origin main
