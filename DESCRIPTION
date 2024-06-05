@@ -2,7 +2,7 @@ Package: WCESurvZ
 Type: Package
 Title: Weighted Composite Endpoint Survival Analysis Tools
 Version: 1.1.0
-Author@R: c( person("Xiaoqin", "Zhou", "zhouxiaoqin_123@163.com", role
+Author@R: c( person("Xiaoqin", "Zhou", "zhouxiaoqin@wchscu.cn", role
         = "author", person("Weiqiang", "Ruan","ruanwei_123@163.com",
         role = "author" )
 Maintainer: [Your Name] <your.email@example.com>

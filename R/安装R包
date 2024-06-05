@@ -4,4 +4,4 @@ install.packages("U:/小芹复合结局课题代码/WCESurvZ_1.1.0.zip", repos =
 
 git add .
 
-git commit -m "a complete version "
+git commit -m "a small change"
