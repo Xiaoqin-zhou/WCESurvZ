@@ -10,8 +10,9 @@
 #include "Rversion.h" // Include R version information header file
 
 static const R_CMethodDef Centries[] = {
-    {"Csurvdiff2",  (DL_FUNC) &survdiff2, 14},
+    // {"Csurvdiff2",  (DL_FUNC) &survdiff2, 14},
     {"Cwcelogrank",  (DL_FUNC) &wcelogrank, 14},
+    {"CsurvWCEKM",  (DL_FUNC) &survWCEKM, 10},
     {NULL, NULL, 0}
 };
 

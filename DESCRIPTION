@@ -5,7 +5,7 @@ Version: 1.1.0
 Author@R: c( person("Xiaoqin", "Zhou", "zhouxiaoqin@wchscu.cn", role
         = "author", person("Weiqiang", "Ruan","ruanwei_123@163.com",
         role = "author" )
-Maintainer: [Your Name] <your.email@example.com>
+Maintainer: [Xiaoqin Zhou] <zhouxiaoqin@wchscu.cn>
 Description: WCESurvZ provides tools for calculating weighted survival rates 
     and survival data based on sample events and event times. It includes functions 
     for performing logrank tests for comparing two groups, accounting for recurrent 

@@ -42,13 +42,25 @@ SEXP survfitkm(SEXP y2, SEXP weight2, SEXP sort12, SEXP sort22,
                SEXP type2, SEXP id2, SEXP nid2, SEXP position2, 
                SEXP influence2, SEXP reverse2, SEXP entry2);
 
-void survdiff2(int   *nn,     int   *nngroup,    int   *nstrat, 
-	       double *rho,    double *time,       int   *status, 
-	       int   *group,  int   *strata,	   double *obs, 
-	       double *exp, double *tempt,    double *var,        double *risk, 
-	       double *kaplan);
+// void survdiff2(int   *nn,     int   *nngroup,    int   *nstrat, 
+// 	       double *rho,    double *time,       int   *status, 
+// 	       int   *group,  int   *strata,	   double *obs, 
+// 	       double *exp, double *tempt,    double *var,        double *risk, 
+// 	       double *kaplan);
 
 void wcelogrank(int   *nn,     int   *nngroup,    
 	          double *time,       int   *status, int   *group, double *weight, 
               double *nrisk1, double *nrisk2,  double *nriskall,
               double *obs, double *exp, double *tempt,   double *var,   double *risk);
+
+// void survWCEKM2(int *nn, int *nngroup,    
+// 	          double *time, int *group,
+//               double *nevent, double *nrisk, 
+//               double *estimate, double *stderr, double *cumhaz, double *stdchaz);
+
+void survWCEKM(int *nn, int *nngroup,    
+	          double *time, int *group,
+              double *nevent, double *nrisk, 
+              double *estimate, double *stderr2, double *cumhaz2, double *stdchaz2);
+
+

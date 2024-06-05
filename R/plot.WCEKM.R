@@ -72,7 +72,7 @@ plot.WCEKM <- function(WCEKM_obj, xlim = NULL, ylim = c(0, 1),
 
   # Set default legend labels
   if (is.null(legend_labels)) {
-    legend_labels <- unique(km_data$group)
+    legend_labels <- levels(km_data$group)
   }
 
   # Set default colors if not provided
@@ -98,7 +98,7 @@ plot.WCEKM <- function(WCEKM_obj, xlim = NULL, ylim = c(0, 1),
     theme +
     geom_confint(mapping = aes(ymin = lower, ymax = upper, fill = group), data = km_data, stat = "identity",
         position = "identity", na.rm = TRUE,alpha = conf.int.alpha, color = NA)+
-    theme(legend.position = legend_position) +
+    theme(legend.position = legend_position,legend.background = element_blank()) +
     annotate("text", x = pval.coord[1], y = pval.coord[2], label = paste("p =", p_value_formatted), hjust = 1.5, vjust = 2, size = pval.size) +
     scale_color_manual(values = colors, labels = legend_labels) +
     scale_fill_manual(values = colors, labels = legend_labels) +
