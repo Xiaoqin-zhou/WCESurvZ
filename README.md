@@ -17,12 +17,12 @@ devtools::install_github("Xiaoqin-zhou/WCESurvZ")
 
 ## Usage
 Here is a basic example of how to use the WCESurvZ package:
-
+```R
 library(WCESurvZ)
 weights <- c(CVdeath = 1, MI = 0.55, Stroke = 0.455)
 WCE_obj <- WCE_KMSurv(surv_exdata, weights)
 plot(WCE_obj)
-
+```
 For more detailed documentation and examples, please refer to the package function reference.
 
 ## Developed by Xiaoqin Zhou and team.
