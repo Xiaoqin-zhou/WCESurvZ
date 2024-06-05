@@ -12,7 +12,7 @@ Support for Recurrent Events: WCESurvZ provides a module for handling recurrent 
 ## Install WCESurvZ from GitHub
 You can install the WCESurvZ package from GitHub using the following commands:
 ```R
-devtools::install_github("your_username/WCESurvZ")
+devtools::install_github("Xiaoqin-zhou/WCESurvZ")
 ```
 
 ## Usage
